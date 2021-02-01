@@ -1,0 +1,13 @@
+# Import des templates de jobs pré-configurés
+include:
+  - project: o/infra/templates
+    file: /gitlab-ci/includes/jobs.yaml
+
+stages:
+  - build
+
+# Construction d'une image Docker
+Build:
+  extends: .build
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master" && $CI_PIPELINE_SOURCE != "schedule"'

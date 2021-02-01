@@ -1,0 +1,16 @@
+version: '3'
+services:
+  pg:
+    image: postgres
+    environment:
+      POSTGRES_PASSWORD: "noneedforsecret"
+      POSTGRES_USER: "pg"
+      POSTGRES_DB: "decidim_development_app_development"
+    ports:
+      -  5432:5432
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+volumes:
+  node_modules: {}
+  bundle: {}
+  pg-data: {}
