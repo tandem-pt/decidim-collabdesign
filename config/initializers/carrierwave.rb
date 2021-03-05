@@ -1,31 +1,33 @@
 # frozen_string_literal: true
 
-# Default CarrierWave setup.
-#
 CarrierWave.configure do |config|
-  config.permissions = 0o666
-  config.directory_permissions = 0o777
-  config.storage = :file
-  config.enable_processing = !Rails.env.test?
-end
+  aws_access_key=ENV.fetch('AWS_ACCESS_KEY_ID', nil)
+  enabled_aws = !aws_access_key.nil? && !aws_access_key.empty?;
 
-# Setup CarrierWave to use Amazon S3. Add `gem "fog-aws" to your Gemfile.
-#
-# CarrierWave.configure do |config|
-#   config.storage = :fog
-#   config.fog_provider = 'fog/aws'                                             # required
-#   config.fog_credentials = {
-#     provider:              'AWS',                                             # required
-#     aws_access_key_id:     Rails.application.secrets.aws_access_key_id,     # required
-#     aws_secret_access_key: Rails.application.secrets.aws_secret_access_key, # required
-#     region:                'eu-west-1',                                       # optional, defaults to 'us-east-1'
-#     host:                  's3.example.com',                                  # optional, defaults to nil
-#     endpoint:              'https://s3.example.com:8080'                      # optional, defaults to nil
-#   }
-#   config.fog_directory  = 'name_of_directory'                                 # required
-#   config.fog_public     = false                                               # optional, defaults to true
-#   config.fog_attributes = {
-#     'Cache-Control' => "max-age=#{365.day.to_i}",
-#     'X-Content-Type-Options' => "nosniff"
-#   }
-# end
+  if enabled_aws
+    puts "AWS ENABLED"
+    config.storage    = :aws
+    config.aws_bucket = ENV.fetch('AWS_BUCKET', '') # for AWS-side bucket access permissions config, see section below
+  
+    # The maximum period for authenticated_urls is only 7 days.
+    config.aws_authenticated_url_expiration = 60 * 60 * 24 * 7
+  
+    # Set custom options such as cache control to leverage browser caching.
+    # You can use either a static Hash or a Proc.
+    config.aws_attributes = -> { {
+      expires: 1.week.from_now.httpdate,
+      cache_control: "max-age=#{365.day.to_i}"
+    } }
+  
+    config.aws_credentials = {
+      access_key_id:     ENV.fetch('AWS_ACCESS_KEY_ID', ''),
+      secret_access_key: ENV.fetch('AWS_SECRET_ACCESS_KEY', ''),
+      region:            ENV.fetch('AWS_REGION', 'eu-west-2'), # Required
+      stub_responses:    Rails.env.test? 
+    }
+  else
+    config.storage = :file
+  end
+
+  config.cache_dir = "#{Rails.root}/tmp/uploads"
+end

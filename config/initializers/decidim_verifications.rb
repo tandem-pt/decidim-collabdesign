@@ -1,23 +1,12 @@
 # frozen_string_literal: true
 
-Decidim::Verifications.register_workflow(:dummy_authorization_handler) do |workflow|
-  workflow.form = "DummyAuthorizationHandler"
-  workflow.action_authorizer = "DummyAuthorizationHandler::DummyActionAuthorizer"
-  workflow.expires_in = 1.month
-  workflow.renewable = true
-  workflow.time_between_renewals = 5.minutes
-
-  workflow.options do |options|
-    options.attribute :allowed_postal_codes, type: :string, default: "08001", required: false
-    options.attribute :allowed_scope_id, type: :scope, required: false
-  end
+# We are using the same DirectVerifications engine without the admin part to 
+# create a custom verification method called "direct_verifications_managers"
+Decidim::Verifications.register_workflow(:direct_verifications_managers) do |workflow|
+  workflow.engine = Decidim::DirectVerifications::Verification::Engine
 end
 
-Decidim::Verifications.register_workflow(:another_dummy_authorization_handler) do |workflow|
-  workflow.form = "AnotherDummyAuthorizationHandler"
-  workflow.expires_in = 1.month
-
-  workflow.options do |options|
-    options.attribute :passport_number, type: :string, required: false
-  end
+# We need to tell the plugin to handle this method in addition to the default "Direct verification". Any registered workflow is valid.
+Decidim::DirectVerifications.configure do |config|
+  config.manage_workflows = %w(direct_verifications_managers)
 end

@@ -10,6 +10,7 @@ services:
       -  5432:5432
     volumes:
       - pg-data:/var/lib/postgresql/data
+      - ./dump:/var/lib/postgresql/dump
 volumes:
   node_modules: {}
   bundle: {}

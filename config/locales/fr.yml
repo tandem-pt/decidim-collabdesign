@@ -1912,27 +1912,13 @@ fr:
         one: Engagement
         other: Engagements
     authorization_handlers:
-      another_dummy_authorization_handler:
+      sphere_of_tech_handler:
         explanation: >-
-          Obtenir une vérification en saisissant un numéro de passeport
-          commençant par "A"
+          Nous avons besoins de quelques informations supplémentaire pour continuer.
         fields:
-          passport_number: Numéro de passeport
+          term_and_conditions: J'ai lu les termes et conditions
           postal_code: Code postal
-        name: Un autre exemple d'autorisation
-      dummy_authorization_handler:
-        explanation: >-
-          Obtenir une vérification en saisissant un numéro de document se
-          terminant par "X"
-        fields:
-          allowed_postal_codes: Codes postaux autorisés (séparés par des virgules)
-          allowed_scope_id: Secteur autorisé
-          document_number: Numéro de document
-          postal_code: Code postal
-          scope_id: Secteur
-        name: Exemple d'autorisation
-      dummy_authorization_workflow:
-        name: Procédure d'autorisation factice
+        name: Spheres Of Techs
       errors:
         duplicate_authorization: Un utilisateur est déjà autorisé avec les mêmes données.
       expired_at: Expiré à %{timestamp}
@@ -2800,13 +2786,13 @@ fr:
       resource_endorsed:
         email_intro: >-
           %{endorser_name} %{endorser_nickname}, que vous suivez, vient de
-          s'engager "%{resource_title}" et nous pensons que cela pourrait vous
+          soutenir "%{resource_title}" et nous pensons que cela pourrait vous
           intéresser. Découvrez-le et contribuez :
         email_outro: >-
           Vous avez reçu cette notification parce que vous suivez
           %{endorser_nickname}. Vous pouvez arrêter de recevoir des
           notifications en suivant le lien précédent.
-        email_subject: '%{endorser_nickname} s'engage pour un nouveau contenu'
+        email_subject: "%{endorser_nickname} s'engage pour un nouveau contenu"
         notification_title: >-
           Le <a href="%{resource_path}">%{resource_title}</a> %{resource_type} a
           été soutenu par <a href="%{endorser_path}">%{endorser_name}
@@ -3271,7 +3257,7 @@ fr:
             Vous avez reçu cette notification parce que vous suivez
             %{endorser_nickname}. Vous pouvez arrêter de recevoir des
             notifications en cliquant sur ce dernier lien.
-          email_subject: '%{endorser_nickname} s'est engagé pour une nouvelle proposition'
+          email_subject: "%{endorser_nickname} s'est engagé pour une nouvelle proposition"
           notification_title: >-
             La proposition <a href="%{resource_path}">%{resource_title}</a> a
             été soutenue par <a href="%{endorser_path}">%{endorser_name}
@@ -4942,7 +4928,7 @@ fr:
         others: Autres
         public: Public
       filter:
-        all: Tous types de montages
+        all: Tous les thêmes
         commission: Commission
         consultative_advisory: Consultatif / consultatif
         executive: Exécutif
@@ -6593,12 +6579,8 @@ fr:
           unconfirmed: Vous devez confirmer votre email pour vous autoriser.
         first_login:
           actions:
-            another_dummy_authorization_handler: Vérifier avec un autre exemple de gestionnaire d'autorisation
+            sphere_of_tech_handler: Vérifier votre compte Sphere of Tech
             csv_census: Vérifier par rapport au recensement de l'organisation
-            dummy_authorization_handler: >-
-              Vérifier en comparant avec l'exemple du gestionnaire
-              d'autorisation
-            dummy_authorization_workflow: Vérifiez par rapport à l'exemple de procédure d'autorisation
             id_documents: Vérifiez votre identité en téléchargeant votre document d'identité
             postal_letter: >-
               Vérifiez votre identité en recevant un code de vérification par

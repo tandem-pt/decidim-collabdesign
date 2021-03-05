@@ -1,0 +1,10 @@
+# config/sidekiq.yml
+---
+:concurrency: 2
+:queues:
+  - default
+  - mailers
+  - decidim_development_app_production_mailers	
+  - decidim_development_app_production_events	
+  - decidim_development_app_production_default	
+  

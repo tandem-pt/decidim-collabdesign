@@ -6,8 +6,29 @@ include:
 stages:
   - build
 
-# Construction d'une image Docker
-Build:
-  extends: .build
+Build Stable:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
   rules:
-    - if: '$CI_COMMIT_REF_NAME == "master" && $CI_PIPELINE_SOURCE != "schedule"'
+    - if: '$CI_COMMIT_REF_NAME == "master"'
+      when: manual
+  script:
+    - echo "45.66.221.1 npm-8ee.hidora.com" >> /etc/hosts
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:latest-stable --build-arg decidim_docker_version=latest-stable --build-arg decidim_git_branch=octree/0.23-stable
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile --destination $CI_REGISTRY_IMAGE:0.23.1-stable-${CI_COMMIT_TAG:-$CI_COMMIT_SHORT_SHA} --build-arg decidim_docker_version=latest-stable --build-arg decidim_git_branch=octree/0.23-stable
+
+Build Dev:
+  stage: build
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  rules:
+    - if: '$CI_COMMIT_REF_NAME == "master"'
+      when: manual
+  script:
+    - echo "45.66.221.1 npm-8ee.hidora.com" >> /etc/hosts
+    - echo "{\"auths\":{\"$CI_REGISTRY\":{\"username\":\"$CI_REGISTRY_USER\",\"password\":\"$CI_REGISTRY_PASSWORD\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor --context $CI_PROJECT_DIR --dockerfile $CI_PROJECT_DIR/Dockerfile.dev --destination $CI_REGISTRY_IMAGE:latest-dev --build-arg decidim_docker_version=latest-dev --build-arg decidim_git_branch=octree/development

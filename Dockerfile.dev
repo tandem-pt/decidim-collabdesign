@@ -9,8 +9,11 @@ ENV RAILS_SERVE_STATIC_FILES true
 ENV TZ=Europe/Zurich
 ENV DECIDIM_GIT_BRANCH=$decidim_git_branch
 WORKDIR /code
+
 RUN gem install bundler --version '>= 2.1.4' 
+
 COPY Gemfile /code
+RUN bundle config --global frozen 0
 RUN bundle install
 
 COPY . .
